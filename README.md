@@ -420,4 +420,4 @@ The current implementation provides a complete, working serverless file-sharing 
 
 ## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+This project is open-source and available under the MIT License.
