@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Cloud File Sharing - Modern, secure cloud file sharing system powered by Azure Cloud infrastructure.">
+    <title>Cloud File Sharing — Secure Cloud SaaS</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon SVG -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
+</head>
+
+<body>
+
+    <!-- Ambient Glowing Backdrop -->
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+        <div class="ambient-orb ambient-orb-3"></div>
+    </div>
+
+    <!-- ====================================================================
+         AUTHENTICATION SCREEN (Simple Application Auth)
+         ==================================================================== -->
+    <div id="loginView" class="login-view" style="display: flex;">
+        <div class="login-card">
+            <div class="login-brand-icon">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+                </svg>
+            </div>
+
+            <!-- 1. INITIAL LANDING CARD -->
+            <div id="cardLanding" class="auth-subcard active">
+                <h1 class="login-title">Cloud Share</h1>
+                <p class="login-tagline">Secure cloud file storage</p>
+
+                <div class="landing-actions">
+                    <button id="btnShowLogin" class="btn-auth-primary" type="button">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <polyline points="10 17 15 12 10 7" />
+                            <line x1="15" y1="12" x2="3" y2="12" />
+                        </svg>
+                        <span>Login</span>
+                    </button>
+                    <button id="btnShowRegister" class="btn-auth-secondary" type="button">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <line x1="19" y1="8" x2="19" y2="14" />
+                            <line x1="22" y1="11" x2="16" y2="11" />
+                        </svg>
+                        <span>Create Account</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. LOGIN FORM CARD -->
+            <div id="cardLogin" class="auth-subcard">
+                <h2 class="auth-card-title">Cloud File Sharing</h2>
+                <p class="auth-card-subtitle">Welcome back</p>
+
+                <div id="loginAlert" class="auth-alert auth-alert-error" role="alert"></div>
+
+                <form id="loginForm" class="auth-form" novalidate>
+                    <div class="auth-input-group">
+                        <label for="loginEmail" class="auth-label">Gmail</label>
+                        <input type="email" id="loginEmail" class="auth-input" placeholder="example@gmail.com" required
+                            autocomplete="email">
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label for="loginPassword" class="auth-label">Password</label>
+                        <input type="password" id="loginPassword" class="auth-input" placeholder="Enter password"
+                            required autocomplete="current-password">
+                    </div>
+
+                    <button id="btnLoginSubmit" class="btn-auth-primary" type="submit">
+                        <span>Login</span>
+                    </button>
+                </form>
+
+                <div class="auth-switch-prompt">
+                    Don't have an account?
+                    <button id="btnGoToRegister" class="auth-link" type="button">Create Account</button>
+                </div>
+            </div>
+
+            <!-- 3. REGISTRATION FORM CARD -->
+            <div id="cardRegister" class="auth-subcard">
+                <h2 class="auth-card-title">Cloud File Sharing</h2>
+                <p class="auth-card-subtitle">Create your account</p>
+
+                <div id="registerAlert" class="auth-alert" role="alert"></div>
+
+                <form id="registerForm" class="auth-form" novalidate>
+                    <div class="auth-input-group">
+                        <label for="registerEmail" class="auth-label">Email</label>
+                        <input type="email" id="registerEmail" class="auth-input" placeholder="example@gmail.com"
+                            required autocomplete="email">
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label for="registerPassword" class="auth-label">Password</label>
+                        <input type="password" id="registerPassword" class="auth-input"
+                            placeholder="At least 8 characters" required autocomplete="new-password">
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label for="registerConfirmPassword" class="auth-label">Confirm Password</label>
+                        <input type="password" id="registerConfirmPassword" class="auth-input"
+                            placeholder="Repeat password" required autocomplete="new-password">
+                    </div>
+
+                    <button id="btnRegisterSubmit" class="btn-auth-primary" type="submit">
+                        <span>Create Account</span>
+                    </button>
+                </form>
+
+                <div class="auth-switch-prompt">
+                    Already have an account?
+                    <button id="btnGoToLogin" class="auth-link" type="button">Login</button>
+                </div>
+            </div>
+
+            <div class="login-security-notice">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                <span>Encrypted private cloud storage & sessions</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         AUTHENTICATED APPLICATION SHELL (Phase 8)
+         ==================================================================== -->
+    <div id="appShell" class="app-shell" style="display: none;">
+
+        <!-- Mobile Sidebar Overlay Backdrop -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="#dashboard" class="brand-badge">
+                    <div class="brand-icon-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+                        </svg>
+                    </div>
+                    <div class="brand-name">
+                        CloudShare
+                        <span class="brand-tag">Azure</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Navigation</div>
+                <button class="nav-link active" data-view="dashboard" id="navDashboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
+
+                <button class="nav-link" data-view="myfiles" id="navMyFiles">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                    </svg>
+                    <span>My Files</span>
+                    <span id="badgeMyFiles" class="nav-badge">0</span>
+                </button>
+
+                <button class="nav-link" data-view="shared" id="navShared">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    <span>Shared With Me</span>
+                    <span id="badgeShared" class="nav-badge">0</span>
+                </button>
+
+                <button class="nav-link" data-view="recent" id="navRecent">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>Recent</span>
+                </button>
+
+                <button class="nav-link" data-view="favorites" id="navFavorites">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>Favorites</span>
+                </button>
+
+                <button class="nav-link" data-view="trash" id="navTrash">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                    <span>Trash</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Storage Indicator (Phase 11) -->
+            <div class="sidebar-storage">
+                <div class="sidebar-storage-header">
+                    <span>Storage</span>
+                    <span id="sidebarStorageUsage">0 MB / 10 GB</span>
+                </div>
+                <div class="storage-progress-bar">
+                    <div id="sidebarStorageBarFill" class="storage-progress-fill" style="width: 0%;"></div>
+                </div>
+                <div id="sidebarStorageSub" class="sidebar-storage-sub">0% of quota used</div>
+            </div>
+
+            <!-- Sidebar Footer with User Details -->
+            <div class="sidebar-footer">
+                <div class="user-profile-strip">
+                    <div id="userAvatarSidebar" class="user-avatar">U</div>
+                    <div class="user-info">
+                        <div id="userNameSidebar" class="user-name">Loading...</div>
+                        <div id="userEmailSidebar" class="user-role">user@domain.com</div>
+                    </div>
+                    <button id="btnSidebarLogout" class="btn-sidebar-logout" title="Sign out" aria-label="Sign out">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div id="mainWrapper" class="main-wrapper">
+
+            <!-- TOP NAVIGATION BAR (Phase 8 & 16) -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button id="btnSidebarToggle" class="btn-sidebar-toggle" aria-label="Toggle navigation menu">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+
+                    <div class="breadcrumbs">
+                        <span>Workspace</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                        <span id="currentViewBreadcrumb" class="current-view-title">Dashboard</span>
+                    </div>
+                </div>
+
+                <!-- Global Search Input Button (Phase 16) -->
+                <button id="btnOpenSearch" class="search-trigger-btn" type="button"
+                    aria-label="Open command palette search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <span class="search-trigger-text">Search files or actions...</span>
+                    <span class="search-shortcut-badge">Ctrl K</span>
+                </button>
+
+                <div class="nav-right">
+                    <!-- Quick Upload CTA -->
+                    <button id="btnHeaderUpload" class="btn-primary" type="button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        <span>Upload</span>
+                    </button>
+
+                    <!-- Notifications Bell -->
+                    <button id="btnNotifications" class="btn-icon" aria-label="Notifications" title="Notifications">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <span id="headerNotificationDot" class="notification-dot" style="display: none;"></span>
+                    </button>
+
+                    <!-- Theme Toggle (Phase 21) -->
+                    <button id="btnThemeToggle" class="btn-icon" aria-label="Toggle dark/light theme"
+                        title="Toggle theme">
+                        <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5" />
+                            <line x1="12" y1="1" x2="12" y2="3" />
+                            <line x1="12" y1="21" x2="12" y2="23" />
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                            <line x1="1" y1="12" x2="3" y2="12" />
+                            <line x1="21" y1="12" x2="23" y2="12" />
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                        </svg>
+                    </button>
+
+                    <!-- User Profile Avatar Chip -->
+                    <div id="btnUserMenu" class="user-menu-btn" title="View Profile">
+                        <div id="userAvatarHeader" class="user-avatar" style="width: 34px; height: 34px;">U</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="content-container">
+
+                <!-- ========================================================
+                     VIEW: DASHBOARD (Phase 10 & 11)
+                     ======================================================== -->
+                <section id="viewDashboard" class="view-section active">
+                    <div class="view-header">
+                        <div>
+                            <h2 id="greetingHeader" class="view-header-title">Good morning, User</h2>
+                            <p class="view-header-subtitle">Manage your files securely from one place.</p>
+                        </div>
+                        <div class="view-header-actions">
+                            <button id="btnDashboardRefresh" class="btn-secondary" type="button">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                </svg>
+                                <span>Refresh</span>
+                            </button>
+                            <button id="btnDashboardUpload" class="btn-primary" type="button">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                                <span>Upload Files</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Statistics Cards (Phase 10) -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Total Files</span>
+                                <div class="stat-icon-wrap stat-icon-blue">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="statTotalFiles" class="stat-card-value">0</div>
+                            <div class="stat-card-sub">
+                                <span>In Azure Private Storage</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Storage Used</span>
+                                <div class="stat-icon-wrap stat-icon-cyan">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="statStorageUsed" class="stat-card-value">0 MB</div>
+                            <div class="stat-card-sub">
+                                <span id="statStoragePercent">0%</span>&nbsp;of 10 GB limit
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Shared Files</span>
+                                <div class="stat-icon-wrap stat-icon-violet">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                                        <polyline points="16 6 12 2 8 6" />
+                                        <line x1="12" y1="2" x2="12" y2="15" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="statSharedFiles" class="stat-card-value">0</div>
+                            <div class="stat-card-sub">
+                                <span>Files shared with you</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Recent Uploads</span>
+                                <div class="stat-icon-wrap stat-icon-emerald">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 14 14" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="statRecentUploads" class="stat-card-value">0</div>
+                            <div class="stat-card-sub">
+                                <span>Uploaded in the last 7 days</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Visualization Card (Phase 11) -->
+                    <div class="storage-dashboard-card">
+                        <div class="storage-dash-header">
+                            <h3 class="storage-dash-title">Storage Breakdown</h3>
+                            <span id="storageDetailedUsage" class="storage-dash-usage">0 MB / 10 GB</span>
+                        </div>
+
+                        <div class="multi-storage-bar">
+                            <div id="barSegmentDocs" class="bar-segment bar-docs" style="width: 0%;" title="Documents">
+                            </div>
+                            <div id="barSegmentImages" class="bar-segment bar-images" style="width: 0%;" title="Images">
+                            </div>
+                            <div id="barSegmentVideos" class="bar-segment bar-videos" style="width: 0%;" title="Videos">
+                            </div>
+                            <div id="barSegmentOther" class="bar-segment bar-other" style="width: 0%;" title="Other">
+                            </div>
+                        </div>
+
+                        <div class="storage-legend-grid">
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: var(--color-primary);"></span>
+                                <div>
+                                    <div class="legend-label">Documents</div>
+                                    <div id="legendDocsSize" class="legend-size">0 KB (0)</div>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: var(--color-cyan);"></span>
+                                <div>
+                                    <div class="legend-label">Images</div>
+                                    <div id="legendImagesSize" class="legend-size">0 KB (0)</div>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: var(--color-violet);"></span>
+                                <div>
+                                    <div class="legend-label">Videos / Audio</div>
+                                    <div id="legendVideosSize" class="legend-size">0 KB (0)</div>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: #f59e0b;"></span>
+                                <div>
+                                    <div class="legend-label">Other</div>
+                                    <div id="legendOtherSize" class="legend-size">0 KB (0)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Files Overview in Dashboard -->
+                    <div class="view-header" style="margin-top: 10px; margin-bottom: 16px;">
+                        <h3 style="font-size: 18px; font-weight: 700;">Recent Files</h3>
+                        <button id="btnViewAllFiles" class="btn-secondary"
+                            style="padding: 6px 12px; font-size: 12.5px;">View all files &rarr;</button>
+                    </div>
+
+                    <div id="dashboardRecentList" class="files-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     VIEW: MY FILES (Phase 12)
+                     ======================================================== -->
+                <section id="viewMyFiles" class="view-section">
+                    <div class="view-header">
+                        <div>
+                            <h2 class="view-header-title">My Files</h2>
+                            <p class="view-header-subtitle">All personal files securely stored in Azure Blob Storage.
+                            </p>
+                        </div>
+                        <div class="view-header-actions">
+                            <button id="btnRefreshFiles" class="btn-secondary" type="button">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                </svg>
+                                <span>Refresh</span>
+                            </button>
+                            <button id="btnMyFilesUpload" class="btn-primary" type="button">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                                <span>Upload File</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter & Search Toolbar (Phase 12) -->
+                    <div class="files-toolbar">
+                        <div class="toolbar-left">
+                            <div class="filter-pills-wrap">
+                                <button class="filter-pill active" data-filter="all">All</button>
+                                <button class="filter-pill" data-filter="docs">Documents</button>
+                                <button class="filter-pill" data-filter="images">Images</button>
+                                <button class="filter-pill" data-filter="videos">Media</button>
+                                <button class="filter-pill" data-filter="archives">Archives</button>
+                                <button class="filter-pill" data-filter="code">Code</button>
+                            </div>
+                            <input type="text" id="filterFilesInput" class="form-input" placeholder="Filter by name..."
+                                style="width: 200px; padding: 6px 12px; font-size: 13px;">
+                        </div>
+
+                        <div class="toolbar-right">
+                            <select id="sortFilesSelect" class="sort-select">
+                                <option value="date-desc">Newest First</option>
+                                <option value="date-asc">Oldest First</option>
+                                <option value="name-asc">Name (A &rarr; Z)</option>
+                                <option value="size-desc">Size (Largest)</option>
+                            </select>
+
+                            <!-- View Mode Toggle (Grid / List) -->
+                            <div class="view-mode-toggle">
+                                <button id="btnViewGrid" class="view-toggle-btn active" title="Grid View"
+                                    aria-label="Grid view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7" />
+                                        <rect x="14" y="3" width="7" height="7" />
+                                        <rect x="14" y="14" width="7" height="7" />
+                                        <rect x="3" y="14" width="7" height="7" />
+                                    </svg>
+                                </button>
+                                <button id="btnViewList" class="view-toggle-btn" title="List View"
+                                    aria-label="List view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="8" y1="6" x2="21" y2="6" />
+                                        <line x1="8" y1="12" x2="21" y2="12" />
+                                        <line x1="8" y1="18" x2="21" y2="18" />
+                                        <line x1="3" y1="6" x2="3.01" y2="6" />
+                                        <line x1="3" y1="12" x2="3.01" y2="12" />
+                                        <line x1="3" y1="18" x2="3.01" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skeleton Loader (Phase 19) -->
+                    <div id="filesSkeleton" class="files-grid" style="display: none;">
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+
+                    <!-- Files Grid View Container -->
+                    <div id="filesGrid" class="files-grid"></div>
+
+                    <!-- Files List Table View Container -->
+                    <div id="filesTableWrap" class="files-table-wrap" style="display: none;">
+                        <table class="files-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Uploaded</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="filesTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State (Phase 19) -->
+                    <div id="filesEmptyState" class="empty-state" style="display: none;">
+                        <div class="empty-icon-wrap">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="empty-title">No files found</h3>
+                        <p class="empty-subtitle">Upload your first document, image, or archive to start storing
+                            securely.</p>
+                        <button id="btnEmptyUploadCTA" class="btn-primary" type="button">Upload File</button>
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     VIEW: SHARED WITH ME (Phase 15)
+                     ======================================================== -->
+                <section id="viewShared" class="view-section">
+                    <div class="view-header">
+                        <div>
+                            <h2 class="view-header-title">Shared With Me</h2>
+                            <p class="view-header-subtitle">Files that other users have granted you permission to view
+                                or download.</p>
+                        </div>
+                        <div class="view-header-actions">
+                            <button id="btnRefreshShared" class="btn-secondary" type="button">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                </svg>
+                                <span>Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Shared Files Table -->
+                    <div id="sharedTableWrap" class="files-table-wrap">
+                        <table class="files-table">
+                            <thead>
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Shared By</th>
+                                    <th>Date Shared</th>
+                                    <th>Permission</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sharedTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Shared Empty State (Phase 15) -->
+                    <div id="sharedEmptyState" class="empty-state" style="display: none;">
+                        <div class="empty-icon-wrap">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <h3 class="empty-title">No shared files yet</h3>
+                        <p class="empty-subtitle">When someone shares a file with your registered Gmail address, it will
+                            appear here.</p>
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     VIEW: RECENT / FAVORITES / TRASH
+                     ======================================================== -->
+                <section id="viewRecent" class="view-section">
+                    <div class="view-header">
+                        <div>
+                            <h2 class="view-header-title">Recent Files</h2>
+                            <p class="view-header-subtitle">Quick access to files uploaded or accessed recently.</p>
+                        </div>
+                    </div>
+                    <div id="recentFilesGrid" class="files-grid"></div>
+                </section>
+
+                <section id="viewFavorites" class="view-section">
+                    <div class="view-header">
+                        <div>
+                            <h2 class="view-header-title">Favorites</h2>
+                            <p class="view-header-subtitle">Pinned and bookmarked files for quick retrieval.</p>
+                        </div>
+                    </div>
+                    <div id="favoritesFilesGrid" class="files-grid"></div>
+                </section>
+
+                <section id="viewTrash" class="view-section">
+                    <div class="view-header">
+                        <div>
+                            <h2 class="view-header-title">Trash</h2>
+                            <p class="view-header-subtitle">Items deleted during this session. Permanent deletions are
+                                purged from Azure Blob Storage.</p>
+                        </div>
+                    </div>
+                    <div id="trashFilesGrid" class="files-grid"></div>
+                </section>
+
+                <!-- ========================================================
+                     VIEW: NOTIFICATIONS
+                     ======================================================== -->
+                <section id="viewNotifications" class="view-section">
+                    <div class="view-header">
+                        <div>
+                            <h2 class="view-header-title">Notifications</h2>
+                            <p class="view-header-subtitle">Recent activity, file uploads, collaboration shares, and
+                                security alerts.</p>
+                        </div>
+                        <div class="view-header-actions">
+                            <button id="btnMarkAllNotificationsRead" class="btn-secondary" type="button"
+                                title="Mark all notifications as read">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <span>Mark all as read</span>
+                            </button>
+                            <button id="btnClearAllNotifications" class="btn-secondary" type="button"
+                                title="Clear all notification history">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6" />
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                </svg>
+                                <span>Clear all</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Toolbar -->
+                    <div class="files-toolbar" style="margin-bottom: 20px;">
+                        <div class="toolbar-left">
+                            <div class="filter-pills-wrap">
+                                <button class="filter-pill active" data-notif-filter="all">All (<span
+                                        id="notifCountAll">0</span>)</button>
+                                <button class="filter-pill" data-notif-filter="upload">Uploads (<span
+                                        id="notifCountUploads">0</span>)</button>
+                                <button class="filter-pill" data-notif-filter="share">Shares (<span
+                                        id="notifCountShares">0</span>)</button>
+                                <button class="filter-pill" data-notif-filter="system">System (<span
+                                        id="notifCountSystem">0</span>)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification Feed Container -->
+                    <div id="notificationsFeed" class="notifications-feed"></div>
+
+                    <!-- Empty State -->
+                    <div id="notificationsEmptyState" class="empty-state" style="display: none;">
+                        <div class="empty-icon-wrap"
+                            style="background: rgba(59, 130, 246, 0.1); color: var(--color-primary);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                            </svg>
+                        </div>
+                        <h3 class="empty-title">All caught up!</h3>
+                        <p class="empty-subtitle">You have no new notifications. Activities like uploading or sharing
+                            files will appear here.</p>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODALS (Native HTML5 <dialog> elements)
+         ==================================================================== -->
+
+    <!-- 1. UPLOAD FILE MODAL (Phase 13) -->
+    <dialog id="uploadModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Upload File to Azure</h3>
+                <button id="btnCloseUploadModal" class="btn-modal-close" aria-label="Close upload modal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Hidden file input placed outside dropzone to prevent event bubbling cancellation -->
+            <input type="file" id="fileInput" style="display: none;" aria-label="Select file to upload">
+
+            <div id="uploadDropzone" class="upload-dropzone">
+                <div class="dropzone-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                </div>
+                <div class="dropzone-title">Click anywhere to browse or drag and drop</div>
+                <div class="dropzone-sub">Maximum file size: 10 MB &bull; Encrypted in Azure Blob Storage</div>
+                <button type="button" id="btnBrowseFile" class="btn-primary"
+                    style="margin-top: 14px; padding: 7px 18px; font-size: 13px; pointer-events: auto;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    <span>Choose File from Computer</span>
+                </button>
+            </div>
+
+            <!-- Selected File Details -->
+            <div id="fileSelectedBox" class="file-selected-box" style="display: none;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)"
+                    stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                </svg>
+                <div style="flex: 1; min-width: 0;">
+                    <div id="selectedFileName"
+                        style="font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    </div>
+                    <div id="selectedFileSize" style="font-size: 12px; color: var(--text-muted);"></div>
+                </div>
+                <button id="btnClearSelectedFile" class="btn-modal-close" title="Clear selection">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Upload Progress Track (Phase 13) -->
+            <div id="uploadProgressWrapper" class="upload-progress-wrapper" style="display: none;">
+                <div class="progress-info">
+                    <span id="uploadStatusText">Uploading to Azure Blob Storage...</span>
+                    <span id="uploadPercentageText">0%</span>
+                </div>
+                <div class="upload-progress-track">
+                    <div id="uploadProgressBar" class="upload-progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="btnCancelUpload" class="btn-secondary" type="button">Cancel</button>
+                <button id="btnSubmitUpload" class="btn-primary" type="button" disabled>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 16 12 12 8 16" />
+                        <line x1="12" y1="12" x2="12" y2="21" />
+                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+                    </svg>
+                    <span>Upload</span>
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- 2. SHARE FILE MODAL (Phase 14) -->
+    <dialog id="shareModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Share File</h3>
+                <button id="btnCloseShareModal" class="btn-modal-close" aria-label="Close share modal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 18px;">
+                Share <strong id="shareModalFileName" style="color: var(--text-primary);">filename</strong> with another
+                authenticated user.
+            </p>
+
+            <form id="shareForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label class="form-label" for="shareEmailInput">Share with (Email):</label>
+                    <input type="email" id="shareEmailInput" class="form-input" placeholder="collaborator@example.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="sharePermissionSelect">Permission:</label>
+                    <select id="sharePermissionSelect" class="form-input" style="cursor: pointer;">
+                        <option value="viewer" selected>Viewer (Can view and download)</option>
+                        <option value="editor">Editor (Can view and download)</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="btnCancelShare" class="btn-secondary" type="button">Cancel</button>
+                    <button id="btnSubmitShare" class="btn-primary" type="button">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                        <span>Share File</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- 3. DELETE CONFIRMATION MODAL (Phase 17) -->
+    <dialog id="deleteModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--color-danger-bg); color: var(--color-danger); display: flex; align-items: center; justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                    </div>
+                    <h3 class="modal-title">Delete File</h3>
+                </div>
+                <button id="btnCloseDeleteModal" class="btn-modal-close" aria-label="Close delete modal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">
+                Are you sure you want to delete <strong id="deleteModalFileName"
+                    style="color: var(--text-primary);">filename</strong>?
+            </p>
+            <p style="font-size: 12.5px; color: var(--color-danger);">
+                This file will be permanently removed from Azure Blob Storage and Cosmos DB. This action cannot be
+                undone.
+            </p>
+
+            <div class="modal-actions">
+                <button id="btnCancelDelete" class="btn-secondary" type="button">Cancel</button>
+                <button id="btnConfirmDelete" class="btn-danger" type="button">Delete Permanently</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- 4. FILE DETAILS MODAL (Phase 17) -->
+    <dialog id="detailsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">File Details</h3>
+                <button id="btnCloseDetailsModal" class="btn-modal-close" aria-label="Close details modal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="metadata-grid">
+                <span class="metadata-label">File Name</span>
+                <span id="detailFileName" class="metadata-value"></span>
+
+                <span class="metadata-label">File Size</span>
+                <span id="detailFileSize" class="metadata-value"></span>
+
+                <span class="metadata-label">Content Type</span>
+                <span id="detailContentType" class="metadata-value"></span>
+
+                <span class="metadata-label">Uploaded At</span>
+                <span id="detailCreatedAt" class="metadata-value"></span>
+
+                <span class="metadata-label">File ID</span>
+                <span id="detailFileId" class="metadata-value"></span>
+
+                <span class="metadata-label">Owner</span>
+                <span id="detailOwner" class="metadata-value"></span>
+
+                <span class="metadata-label">Blob Name</span>
+                <span id="detailBlobName" class="metadata-value"></span>
+            </div>
+
+            <div class="modal-actions">
+                <button id="btnDetailsDownload" class="btn-primary" type="button">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span>Download File</span>
+                </button>
+                <button id="btnCloseDetails" class="btn-secondary" type="button">Close</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- 5. COMMAND PALETTE / GLOBAL SEARCH (Phase 16) -->
+    <dialog id="commandModal" class="command-palette">
+        <div class="modal-card" style="padding: 20px;">
+            <div class="command-search-bar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="commandSearchInput" class="command-search-input"
+                    placeholder="Type to search files, navigation, or commands..." autocomplete="off">
+                <span class="search-shortcut-badge">ESC</span>
+            </div>
+
+            <div id="commandResultsList" class="command-results-list">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </dialog>
+
+    <!-- TOAST NOTIFICATION CONTAINER (Phase 18) -->
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Application Logic -->
+    <script src="app.js"></script>
+</body>
+
+</html>
